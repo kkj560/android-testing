@@ -29,9 +29,12 @@ class ExampleUnitTest {
 
         var testNull2 = TestNull(null)
         assertEquals(0, testNull2.getNumbers())
+
+        var testNull3 = TestNull()
+        assertEquals(6, testNull3.getNumbers())
     }
 
-    inner class TestNull(var tasks: MutableList<Int>? = mutableListOf()){
+    inner class TestNull(var tasks: MutableList<Int>? = mutableListOf(1,2,3,4,5,6)){
         fun getNumbers() : Int{
             tasks?.let { return ArrayList(it).size }
             return 0
