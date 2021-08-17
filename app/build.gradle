@@ -30,6 +30,22 @@ android {
     testOptions.unitTests {
         includeAndroidResources = true
     }
+    // META-INF 에러 발생.
+    // https://stackoverflow.com/questions/44342455/more-than-one-file-was-found-with-os-independent-path-meta-inf-license
+    // one of the opinion. some problem with apk if we didn't exclude theses files from google.github.io/android-gradle-dsl/current/… Exclude Paths that match an exclude pattern will not be included in the APK.
+    // 에러로 뜨는 파일을 모두 예외처리함.
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude("META-INF/*.kotlin_module")
+    }
 }
 
 dependencies {
@@ -75,4 +91,13 @@ dependencies {
 
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
+    // Dependencies for Android instrumented unit tests
+    androidTestImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+
+    // Testing code should not be included in the main code.
+    // Once https://issuetracker.google.com/128612536 is fixed this can be fixed.
+
+    implementation "androidx.fragment:fragment-testing:$fragmentVersion"
+    implementation "androidx.test:core:$androidXTestCoreVersion"
 }
